@@ -12,3 +12,8 @@ void led_init(int led_pin)
     uint pio_program_offset = pio_add_program(pio0, &ws2812_program);
     ws2812_program_init(pio0, 0, pio_program_offset, led_pin, 800000, false);
 }
+
+uint32_t led_colour(int r, int g, int b)
+{
+    return (r << 24) | (g << 16) | (b << 8);
+}

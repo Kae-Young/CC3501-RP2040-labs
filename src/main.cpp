@@ -22,10 +22,8 @@ int main()
         log(LogLevel::INFORMATION, "Hello world");
 
         // Turn on the first LED to be a certain colour
-        uint8_t red = 0;
-        uint8_t green = 0;
-        uint8_t blue = 255;
-        led_data[0] = (red << 24) | (green << 16) | (blue << 8);
+
+        led_data[0] = led_colour(255, 0, 0);
         pio_sm_put_blocking(pio0, 0, led_data[0]);
         sleep_ms(500);
 
