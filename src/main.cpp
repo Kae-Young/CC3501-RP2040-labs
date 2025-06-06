@@ -22,7 +22,8 @@ int main()
 
         // Turn on the first LED to be a certain colour
 
-        led_data[0] = led_colour(white, 10);
+        //led_data[0] = led_colour(white, 10);
+        led_data = led_set(1, led_data, led_colour(red, 50));
         pio_sm_put_blocking(pio0, 0, led_data[0]);
         sleep_ms(500);
 

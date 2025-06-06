@@ -1,10 +1,10 @@
 #pragma once
 
-/// Initialise PIO0 to control the LED chain
-/// Returns a pointer to an led data array
+/// @brief Initialize PIO0 to control the LED chain
+/// @returns A pointer to an led data array
 uint32_t* led_init(int led_pin);
 
-/// Represents possible preconfigured colours
+/// @brief Represents preconfigured colour options
 enum colour {
     blue,
     red,
@@ -14,5 +14,18 @@ enum colour {
     custom
 };
 
-/// Encode rgb value to uint32_t for PIO control
+/// @brief Encodes a colour into a structure that the PIO can read
+/// @param colour Preconfigured colour options. Put custom for rgb input
+/// @param brightness (Optional) LED intensity for preconfigured colours
+/// @param r (Optional) Red value
+/// @param g (Optional) Green value
+/// @param b (Optional) Blue value
+/// @returns uint32_t structure that the PIO can read
 uint32_t led_colour(colour colour = custom, int brightness = 255, int r = 0, int g = 0, int b = 0);
+
+/// @brief Updates the LED data by changing the value of one LED
+/// @param led_num Address of LED
+/// @param led_data A handle on the current LED data array
+/// @param value (Optional) Ouput from led_colour
+/// @return The newly update LED data aray
+uint32_t* led_set(int led_numm, uint32_t* led_data, uint32_t value = 0);

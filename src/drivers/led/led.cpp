@@ -62,3 +62,9 @@ uint32_t led_colour(colour colour, int brightness, int r, int g, int b)
     }
     return (r << 24) | (g << 16) | (b << 8);
 }
+
+uint32_t* led_set(int led_num, uint32_t* led_data, uint32_t value)
+{
+    led_data[led_num-1] = value;
+    return led_data;
+}
