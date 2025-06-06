@@ -33,3 +33,6 @@ uint32_t* led_set(int led_numm, uint32_t* led_data, uint32_t value = 0);
 /// @brief Writes current LED data to LEDs
 /// @param led_data 
 void led_write(uint32_t* led_data);
+
+/// @brief Writes off to all LEDs
+void led_off();

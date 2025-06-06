@@ -76,3 +76,12 @@ void led_write(uint32_t* led_data)
         pio_sm_put_blocking(pio0, 0, led_data[i]);
     }
 }
+
+void led_off()
+{
+    uint32_t j [12] = { };
+    for (int i = 0; i < 12; i++)
+    {
+        pio_sm_put_blocking(pio0, 0, j[i]);
+    }
+}
