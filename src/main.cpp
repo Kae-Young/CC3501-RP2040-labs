@@ -14,8 +14,7 @@ int main()
     stdio_init_all();
 
     // Initialise PIO0 to control the LED chain
-    led_init(LED_PIN);
-    uint32_t led_data [1];
+    uint32_t* led_data = led_init(LED_PIN);
 
     for (;;) {
         // Test the log system
@@ -23,7 +22,7 @@ int main()
 
         // Turn on the first LED to be a certain colour
 
-        led_data[0] = led_colour(255, 0, 0);
+        led_data[0] = led_colour(white, 10);
         pio_sm_put_blocking(pio0, 0, led_data[0]);
         sleep_ms(500);
 
