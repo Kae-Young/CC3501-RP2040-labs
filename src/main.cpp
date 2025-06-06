@@ -24,12 +24,14 @@ int main()
 
         //led_data[0] = led_colour(white, 10);
         led_data = led_set(1, led_data, led_colour(red, 50));
-        pio_sm_put_blocking(pio0, 0, led_data[0]);
+        led_data = led_set(5, led_data, led_colour(blue, 200));
+        led_write(led_data);
         sleep_ms(500);
 
         // Set the first LED off 
-        led_data[0] = 0;
-        pio_sm_put_blocking(pio0, 0, led_data[0]);
+        led_data = led_set(1, led_data);
+        led_data = led_set(5, led_data, led_colour(white));
+        led_write(led_data);
         sleep_ms(500);
     }
 

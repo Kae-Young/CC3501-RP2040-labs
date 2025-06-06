@@ -68,3 +68,11 @@ uint32_t* led_set(int led_num, uint32_t* led_data, uint32_t value)
     led_data[led_num-1] = value;
     return led_data;
 }
+
+void led_write(uint32_t* led_data)
+{
+    for (int i = 0; i < 12; i++)
+    {
+        pio_sm_put_blocking(pio0, 0, led_data[i]);
+    }
+}
