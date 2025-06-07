@@ -36,3 +36,7 @@ void led_write(uint32_t* led_data);
 
 /// @brief Writes off to all LEDs
 void led_off();
+
+/// @brief Plays a preconfigured light demo
+/// @param led_data 
+void led_demo(uint32_t* led_data);
