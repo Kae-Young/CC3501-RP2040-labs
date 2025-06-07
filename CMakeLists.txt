@@ -33,6 +33,7 @@ if(CrossCompiling)
         src/main.cpp
         src/drivers/logging/logging.cpp
         src/drivers/led/led.cpp
+        src/drivers/accelerometer/accelerometer.cpp
     )
     target_include_directories(labs
         PUBLIC 
@@ -79,6 +80,7 @@ else()
         src/main.cpp
         src/drivers/logging/logging.cpp
         src/drivers/led/led.cpp
+        src/drivers/accelerometer/accelerometer.cpp
         tests/mocks/pico/stdlib.cpp
         tests/mocks/pico/time.cpp
         tests/mocks/hardware/gpio.cpp

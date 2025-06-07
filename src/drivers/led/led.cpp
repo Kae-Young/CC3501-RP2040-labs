@@ -3,7 +3,7 @@
 #include "hardware/gpio.h"
 #include "hardware/pio.h"
 
-#include "WS2812.pio.h" // This header file gets produced during compilation from the WS2812.pio file
+#include "WS2812.pio.h"
 #include "drivers/logging/logging.h"
 #include "led.h"
 
