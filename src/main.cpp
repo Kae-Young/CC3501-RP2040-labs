@@ -7,18 +7,17 @@
 #include "drivers/logging/logging.h"
 #include "drivers/led/led.h"
 #include "drivers/board.h"
+#include "drivers/accelerometer/accelerometer.h"
 
 int main()
 {
     stdio_init_all();
 
     // Initialise PIO0 to control the LED chain
-    uint32_t* led_data = led_init(LED_PIN);
-    led_demo(led_data);
+    uint32_t* led_data = led_init();
+    //led_demo();
 
-    sleep_ms(100);
-    led_off();
-
+    accel_init();
     while (true)
     {
         /* code */

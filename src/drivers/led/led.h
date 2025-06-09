@@ -2,7 +2,7 @@
 
 /// @brief Initialize PIO0 to control the LED chain
 /// @returns A pointer to an led data array
-uint32_t* led_init(int led_pin);
+uint32_t* led_init();
 
 /// @brief Represents preconfigured colour options
 enum colour {
@@ -37,6 +37,8 @@ void led_write(uint32_t* led_data);
 /// @brief Writes off to all LEDs
 void led_off();
 
+/// @brief Blinks the first LED once
+void led_blink();
+
 /// @brief Plays a preconfigured light demo
-/// @param led_data 
-void led_demo(uint32_t* led_data);
+void led_demo();

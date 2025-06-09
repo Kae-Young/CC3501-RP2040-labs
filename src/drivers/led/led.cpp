@@ -6,12 +6,13 @@
 #include "WS2812.pio.h"
 #include "drivers/logging/logging.h"
 #include "led.h"
+#include "drivers/board.h"
 
-uint32_t* led_init(int led_pin)
+uint32_t* led_init()
 {
     // Initialise PIO0 to control the LED chain
     uint pio_program_offset = pio_add_program(pio0, &ws2812_program);
-    ws2812_program_init(pio0, 0, pio_program_offset, led_pin, 800000, false);
+    ws2812_program_init(pio0, 0, pio_program_offset, LED_PIN, 800000, false);
 
     // Initialise led data array
     static uint32_t led_data[12];
@@ -86,8 +87,21 @@ void led_off()
     }
 }
 
-void led_demo(uint32_t* led_data)
+void led_blink()
 {
+    uint32_t* led_data = led_init();
+    led_off();
+    sleep_ms(400);
+    led_data = led_set(1, led_data, led_colour(white, 150));
+    led_write(led_data);
+    sleep_ms(400);
+    led_off();
+}
+
+void led_demo()
+{
+    uint32_t* led_data = led_init();
+
     for (int i = 1; i < 13; i++)
     {
         led_data = led_set(i, led_data, led_colour(white, 5*i));
@@ -159,5 +173,5 @@ void led_demo(uint32_t* led_data)
         led_write(led_data);
         sleep_ms(100);
     }
-    
+    led_off();
 }
