@@ -42,3 +42,9 @@ void led_blink();
 
 /// @brief Plays a preconfigured light demo
 void led_demo();
+
+/// @brief Returns array of zeros
+/// @param led_data Array to clear
+/// @param arr_size Size of array
+/// @return Array of zeros
+uint32_t* led_clear_array(uint32_t* led_data, int arr_size);

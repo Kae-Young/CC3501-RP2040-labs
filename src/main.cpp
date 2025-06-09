@@ -15,9 +15,9 @@ int main()
 
     // Initialise PIO0 to control the LED chain
     uint32_t* led_data = led_init();
-    //led_demo();
+    led_demo();
 
-    accel_init();
+    //accel_init();
     while (true)
     {
         /* code */
