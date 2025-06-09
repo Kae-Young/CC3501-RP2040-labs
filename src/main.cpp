@@ -22,5 +22,10 @@ int main()
     sleep_ms(100);
     led_off();
 
+    while (true)
+    {
+        /* code */
+    }
+
     return 0;
 }
