@@ -55,3 +55,33 @@ void accel_init()
         return;
     }
 }
+
+void lis3dh_calc_value(uint16_t raw_value, float *final_value) 
+{
+    // Convert with respect to the value being temperature or acceleration reading 
+    float scaling;
+    float senstivity = 0.004f; // g per unit
+
+    scaling = 64 / senstivity;
+
+    // raw_value is signed
+    *final_value = (float) ((int16_t) raw_value) / scaling;
+}
+
+void lis3dh_read_data(uint8_t reg, float *final_value) 
+{
+    // Read two bytes of data and store in a 16 bit data structure
+    uint8_t lsb;
+    uint8_t msb;
+    uint16_t raw_accel;
+    i2c_write_blocking(I2C_INSTANCE, ACCEL_SAD, &reg, 1, true);
+    i2c_read_blocking(I2C_INSTANCE, ACCEL_SAD, &lsb, 1, false);
+
+    reg |= 0x01;
+    i2c_write_blocking(I2C_INSTANCE, ACCEL_SAD, &reg, 1, true);
+    i2c_read_blocking(I2C_INSTANCE, ACCEL_SAD, &msb, 1, false);
+
+    raw_accel = (msb << 8) | lsb;
+
+    lis3dh_calc_value(raw_accel, final_value);
+}
