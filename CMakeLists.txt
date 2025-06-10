@@ -63,6 +63,7 @@ if(CrossCompiling)
         hardware_clocks
         hardware_pwm
         pico_stdio_usb
+        
     )
 
     pico_add_extra_outputs(labs)

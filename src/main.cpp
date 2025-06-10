@@ -13,21 +13,20 @@
 
 int main()
 {
-    stdio_init_all();
+    //stdio_init_all();
 
     // Initialise PIO0 to control the LED chain
     uint32_t* led_data = led_init();
     led_demo();
-
-    
+    led_off();
 
     printf("Hello");
     accel_init();
     while (true)
     {
-        
+        spirit_level_update(led_data);
 
-        sleep_ms(500);
+        sleep_ms(100);
 
     }
 

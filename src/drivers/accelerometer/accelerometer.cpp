@@ -9,6 +9,7 @@
 #include "drivers/board.h"
 #include "hardware/i2c.h"
 #include "drivers/led/led.h"
+#include <math.h>
 
 void accel_init()
 {
@@ -86,31 +87,195 @@ void lis3dh_read_data(uint8_t reg, float *final_value)
     lis3dh_calc_value(raw_accel, final_value);
 }
 
-void spirit_level_update()
+void spirit_level_update(uint32_t* led_data)
 {
+    //init and clear led
+    led_data = led_clear_array(led_data, 12);
+    //led_write(led_data);
+
     // define x and y axes
     float x_accel, y_accel;
 
-    /*  X, Y, Z, polarity map
+    /*  XY polarity map
 
-            {} = probe ribbon cable
+                              ^
+                              |
+                             Y=1
 
-                            ^
-                            |
-                           Y=1
-
-                __________[USB]_________
-                |                 {}   |
-                |                      |
-                |                      |
-                |                      |    X=1 -->
-                |                      |
-                |                      |
-                |                      |
-                |______________________|
+                ____________[USB]__________
+                |                         |
+                |                       1 |
+                |                         |
+                |                       2 |    
+                |                         |     X=1 -->
+                |                       3 |
+                |                         |
+                |                       4 |
+                |   8     7     6     5   |
+                |_________________________|
     */
 
     // get current x and y values
     lis3dh_read_data(0x28, &x_accel);
     lis3dh_read_data(0x2A, &y_accel);
+
+    /*  y axis acceleration to LED representation map
+
+        g value |   1   |  0.33  | -0.33  |  -1   |
+        -----------------------------------------
+        LED     |   4   |   3   |   2   |   1   |
+
+    */
+
+    /*  x axis acceleration to LED representation map
+
+        g value |   1   |  0.33  | -0.33  |  -1   |
+        -----------------------------------------
+        LED     |   8   |   7   |   6   |   5   |
+
+    */
+
+    // y axis
+    if (y_accel <= 0.33)
+    {
+        if (y_accel <= -0.33)
+        {
+            // between -0.33 and -1 (incl)
+
+            // calculate LED 2 brightness
+            float upper_diff = abs(-0.33 - y_accel);
+            float upper_diff_green_brightness_scaler = abs((upper_diff-0.66))/0.66;
+            float upper_diff_red_brightness_scaler = upper_diff/0.66;
+            int upper_green_brightness = round(255*upper_diff_green_brightness_scaler);
+            int upper_red_brightness = round(255*upper_diff_red_brightness_scaler);
+
+            // calculate LED 1 brightness
+            float lower_diff = abs(-1 - y_accel);
+            float lower_diff_green_brightness_scaler = abs((lower_diff-0.66))/0.66;
+            float lower_diff_red_brightness_scaler = lower_diff/0.66;
+            int lower_green_brightness = round(255*lower_diff_green_brightness_scaler);
+            int lower_red_brightness = round(255*lower_diff_red_brightness_scaler);
+
+            // set leds
+            led_set(2, led_data, led_colour(custom, 0, upper_red_brightness, upper_green_brightness, 0));
+            led_set(1, led_data, led_colour(custom, 0, lower_red_brightness, lower_green_brightness, 0));
+        }
+        else
+        {
+            // between 0.33 and -0.33 (incl)
+
+            // calculate LED 3 brightness
+            float upper_diff = abs(0.33 - y_accel);
+            float upper_diff_green_brightness_scaler = abs((upper_diff-0.66))/0.66;
+            float upper_diff_red_brightness_scaler = upper_diff/0.66;
+            int upper_green_brightness = round(255*upper_diff_green_brightness_scaler);
+            int upper_red_brightness = round(255*upper_diff_red_brightness_scaler);
+
+            // calculate LED 2 brightness
+            float lower_diff = abs(-0.33 - y_accel);
+            float lower_diff_green_brightness_scaler = abs((lower_diff-0.66))/0.66;
+            float lower_diff_red_brightness_scaler = lower_diff/0.66;
+            int lower_green_brightness = round(255*lower_diff_green_brightness_scaler);
+            int lower_red_brightness = round(255*lower_diff_red_brightness_scaler);
+
+            // set leds
+            led_set(3, led_data, led_colour(custom, 0, upper_red_brightness, upper_green_brightness, 0));
+            led_set(2, led_data, led_colour(custom, 0, lower_red_brightness, lower_green_brightness, 0));
+        }
+    }
+    else
+    {
+        // between 1 (incl) and 0.33 (incl)
+
+        // calculate LED 4 brightness
+        float upper_diff = abs(1 - y_accel);
+        float upper_diff_green_brightness_scaler = abs((upper_diff-0.66))/0.66;
+        float upper_diff_red_brightness_scaler = upper_diff/0.66;
+        int upper_green_brightness = round(255*upper_diff_green_brightness_scaler);
+        int upper_red_brightness = round(255*upper_diff_red_brightness_scaler);
+
+        // calculate LED 3 brightness
+        float lower_diff = abs(0.33 - y_accel);
+        float lower_diff_green_brightness_scaler = abs((lower_diff-0.66))/0.66;
+        float lower_diff_red_brightness_scaler = lower_diff/0.66;
+        int lower_green_brightness = round(255*lower_diff_green_brightness_scaler);
+        int lower_red_brightness = round(255*lower_diff_red_brightness_scaler);
+
+        // set leds
+        led_set(4, led_data, led_colour(custom, 0, upper_red_brightness, upper_green_brightness, 0));
+        led_set(3, led_data, led_colour(custom, 0, lower_red_brightness, lower_green_brightness, 0));
+    }
+
+    // x axis
+    if (x_accel <= 0.33)
+    {
+        if (x_accel <= -0.33)
+        {
+            // between -0.33 and -1 (incl)
+
+            // calculate LED 6 brightness
+            float upper_diff = abs(-0.33 - x_accel);
+            float upper_diff_green_brightness_scaler = abs((upper_diff-0.66))/0.66;
+            float upper_diff_red_brightness_scaler = upper_diff/0.66;
+            int upper_green_brightness = round(255*upper_diff_green_brightness_scaler);
+            int upper_red_brightness = round(255*upper_diff_red_brightness_scaler);
+
+            // calculate LED 5 brightness
+            float lower_diff = abs(-1 - x_accel);
+            float lower_diff_green_brightness_scaler = abs((lower_diff-0.66))/0.66;
+            float lower_diff_red_brightness_scaler = lower_diff/0.66;
+            int lower_green_brightness = round(255*lower_diff_green_brightness_scaler);
+            int lower_red_brightness = round(255*lower_diff_red_brightness_scaler);
+
+            // set leds
+            led_set(6, led_data, led_colour(custom, 0, upper_red_brightness, upper_green_brightness, 0));
+            led_set(5, led_data, led_colour(custom, 0, lower_red_brightness, lower_green_brightness, 0));
+        }
+        else
+        {
+            // between 0.33 and -0.33 (incl)
+
+            // calculate LED 7 brightness
+            float upper_diff = abs(0.33 - x_accel);
+            float upper_diff_green_brightness_scaler = abs((upper_diff-0.66))/0.66;
+            float upper_diff_red_brightness_scaler = upper_diff/0.66;
+            int upper_green_brightness = round(255*upper_diff_green_brightness_scaler);
+            int upper_red_brightness = round(255*upper_diff_red_brightness_scaler);
+
+            // calculate LED 6 brightness
+            float lower_diff = abs(-0.33 - x_accel);
+            float lower_diff_green_brightness_scaler = abs((lower_diff-0.66))/0.66;
+            float lower_diff_red_brightness_scaler = lower_diff/0.66;
+            int lower_green_brightness = round(255*lower_diff_green_brightness_scaler);
+            int lower_red_brightness = round(255*lower_diff_red_brightness_scaler);
+
+            // set leds
+            led_set(7, led_data, led_colour(custom, 0, upper_red_brightness, upper_green_brightness, 0));
+            led_set(6, led_data, led_colour(custom, 0, lower_red_brightness, lower_green_brightness, 0));
+        }
+    }
+    else
+    {
+        // between 1 (incl) and 0.33 (incl)
+
+        // calculate LED 8 brightness
+        float upper_diff = abs(1 - x_accel);
+        float upper_diff_green_brightness_scaler = abs((upper_diff-0.66))/0.66;
+        float upper_diff_red_brightness_scaler = upper_diff/0.66;
+        int upper_green_brightness = round(255*upper_diff_green_brightness_scaler);
+        int upper_red_brightness = round(255*upper_diff_red_brightness_scaler);
+
+        // calculate LED 7 brightness
+        float lower_diff = abs(0.33 - x_accel);
+        float lower_diff_green_brightness_scaler = abs((lower_diff-0.66))/0.66;
+        float lower_diff_red_brightness_scaler = lower_diff/0.66;
+        int lower_green_brightness = round(255*lower_diff_green_brightness_scaler);
+        int lower_red_brightness = round(255*lower_diff_red_brightness_scaler);
+
+        // set leds
+        led_set(8, led_data, led_colour(custom, 0, upper_red_brightness, upper_green_brightness, 0));
+        led_set(7, led_data, led_colour(custom, 0, lower_red_brightness, lower_green_brightness, 0));
+    }
+    
+    led_write(led_data);
 }
