@@ -85,3 +85,32 @@ void lis3dh_read_data(uint8_t reg, float *final_value)
 
     lis3dh_calc_value(raw_accel, final_value);
 }
+
+void spirit_level_update()
+{
+    // define x and y axes
+    float x_accel, y_accel;
+
+    /*  X, Y, Z, polarity map
+
+            {} = probe ribbon cable
+
+                            ^
+                            |
+                           Y=1
+
+                __________[USB]_________
+                |                 {}   |
+                |                      |
+                |                      |
+                |                      |    X=1 -->
+                |                      |
+                |                      |
+                |                      |
+                |______________________|
+    */
+
+    // get current x and y values
+    lis3dh_read_data(0x28, &x_accel);
+    lis3dh_read_data(0x2A, &y_accel);
+}
