@@ -9,6 +9,8 @@
 #include "drivers/board.h"
 #include "drivers/accelerometer/accelerometer.h"
 
+
+
 int main()
 {
     stdio_init_all();
@@ -18,6 +20,25 @@ int main()
     led_demo();
 
     float x_accel, y_accel, z_accel;
+
+    /*  X, Y, Z, polarity map
+
+            {} = probe ribbon cable
+
+                            ^
+                            |
+                            Y
+
+                __________[USB]_________
+                |                 {}   |
+                |                      |
+                |                      |
+                |           *          |    X -->
+                |           Z          |
+                |                      |
+                |                      |
+                |______________________|
+    */
 
     printf("Hello");
     accel_init();
