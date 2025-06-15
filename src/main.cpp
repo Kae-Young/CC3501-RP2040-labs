@@ -10,7 +10,6 @@
 #include "drivers/accelerometer/accelerometer.h"
 
 
-
 int main()
 {
     //stdio_init_all();
