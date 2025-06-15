@@ -10,7 +10,6 @@
 #include "drivers/accelerometer/accelerometer.h"
 
 
-
 int main()
 {
     //stdio_init_all();
@@ -20,7 +19,6 @@ int main()
     led_demo();
     led_off();
 
-    printf("Hello");
     accel_init();
     while (true)
     {
