@@ -48,3 +48,6 @@ void led_demo();
 /// @param arr_size Size of array
 /// @return Array of zeros
 uint32_t* led_clear_array(uint32_t* led_data, int arr_size);
+
+/// @brief Short preconfigured device start up LED show
+void led_device_startup_show();

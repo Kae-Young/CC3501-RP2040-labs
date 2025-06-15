@@ -17,14 +17,14 @@ int main()
 
     // Initialise PIO0 to control the LED chain
     uint32_t* led_data = led_init();
-    led_demo();
+    //led_demo();
+    led_device_startup_show();
     led_off();
 
-    printf("Hello");
     accel_init();
     while (true)
     {
-        spirit_level_update(led_data);
+        spirit_level_update(led_data, 100);
 
         sleep_ms(100);
 

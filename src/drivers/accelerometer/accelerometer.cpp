@@ -87,7 +87,7 @@ void lis3dh_read_data(uint8_t reg, float *final_value)
     lis3dh_calc_value(raw_accel, final_value);
 }
 
-void spirit_level_update(uint32_t* led_data)
+void spirit_level_update(uint32_t* led_data, uint8_t max_brightness)
 {
     //init and clear led
     led_data = led_clear_array(led_data, 12);
@@ -146,19 +146,21 @@ void spirit_level_update(uint32_t* led_data)
             float upper_diff = abs(-0.33 - y_accel);
             float upper_diff_green_brightness_scaler = abs((upper_diff-0.66))/0.66;
             float upper_diff_red_brightness_scaler = upper_diff/0.66;
-            int upper_green_brightness = round(255*upper_diff_green_brightness_scaler);
-            int upper_red_brightness = round(255*upper_diff_red_brightness_scaler);
+            int upper_green_brightness = round(max_brightness*upper_diff_green_brightness_scaler);
+            int upper_red_brightness = round(max_brightness*upper_diff_red_brightness_scaler);
 
             // calculate LED 1 brightness
             float lower_diff = abs(-1 - y_accel);
             float lower_diff_green_brightness_scaler = abs((lower_diff-0.66))/0.66;
             float lower_diff_red_brightness_scaler = lower_diff/0.66;
-            int lower_green_brightness = round(255*lower_diff_green_brightness_scaler);
-            int lower_red_brightness = round(255*lower_diff_red_brightness_scaler);
+            int lower_green_brightness = round(max_brightness*lower_diff_green_brightness_scaler);
+            int lower_red_brightness = round(max_brightness*lower_diff_red_brightness_scaler);
 
             // set leds
             led_set(2, led_data, led_colour(custom, 0, upper_red_brightness, upper_green_brightness, 0));
             led_set(1, led_data, led_colour(custom, 0, lower_red_brightness, lower_green_brightness, 0));
+            led_set(3, led_data, led_colour(red));
+            led_set(4, led_data, led_colour(red));
         }
         else
         {
@@ -168,19 +170,21 @@ void spirit_level_update(uint32_t* led_data)
             float upper_diff = abs(0.33 - y_accel);
             float upper_diff_green_brightness_scaler = abs((upper_diff-0.66))/0.66;
             float upper_diff_red_brightness_scaler = upper_diff/0.66;
-            int upper_green_brightness = round(255*upper_diff_green_brightness_scaler);
-            int upper_red_brightness = round(255*upper_diff_red_brightness_scaler);
+            int upper_green_brightness = round(max_brightness*upper_diff_green_brightness_scaler);
+            int upper_red_brightness = round(max_brightness*upper_diff_red_brightness_scaler);
 
             // calculate LED 2 brightness
             float lower_diff = abs(-0.33 - y_accel);
             float lower_diff_green_brightness_scaler = abs((lower_diff-0.66))/0.66;
             float lower_diff_red_brightness_scaler = lower_diff/0.66;
-            int lower_green_brightness = round(255*lower_diff_green_brightness_scaler);
-            int lower_red_brightness = round(255*lower_diff_red_brightness_scaler);
+            int lower_green_brightness = round(max_brightness*lower_diff_green_brightness_scaler);
+            int lower_red_brightness = round(max_brightness*lower_diff_red_brightness_scaler);
 
             // set leds
             led_set(3, led_data, led_colour(custom, 0, upper_red_brightness, upper_green_brightness, 0));
             led_set(2, led_data, led_colour(custom, 0, lower_red_brightness, lower_green_brightness, 0));
+            led_set(1, led_data, led_colour(red));
+            led_set(4, led_data, led_colour(red));
         }
     }
     else
@@ -191,19 +195,21 @@ void spirit_level_update(uint32_t* led_data)
         float upper_diff = abs(1 - y_accel);
         float upper_diff_green_brightness_scaler = abs((upper_diff-0.66))/0.66;
         float upper_diff_red_brightness_scaler = upper_diff/0.66;
-        int upper_green_brightness = round(255*upper_diff_green_brightness_scaler);
-        int upper_red_brightness = round(255*upper_diff_red_brightness_scaler);
+        int upper_green_brightness = round(max_brightness*upper_diff_green_brightness_scaler);
+        int upper_red_brightness = round(max_brightness*upper_diff_red_brightness_scaler);
 
         // calculate LED 3 brightness
         float lower_diff = abs(0.33 - y_accel);
         float lower_diff_green_brightness_scaler = abs((lower_diff-0.66))/0.66;
         float lower_diff_red_brightness_scaler = lower_diff/0.66;
-        int lower_green_brightness = round(255*lower_diff_green_brightness_scaler);
-        int lower_red_brightness = round(255*lower_diff_red_brightness_scaler);
+        int lower_green_brightness = round(max_brightness*lower_diff_green_brightness_scaler);
+        int lower_red_brightness = round(max_brightness*lower_diff_red_brightness_scaler);
 
         // set leds
         led_set(4, led_data, led_colour(custom, 0, upper_red_brightness, upper_green_brightness, 0));
         led_set(3, led_data, led_colour(custom, 0, lower_red_brightness, lower_green_brightness, 0));
+        led_set(1, led_data, led_colour(red));
+        led_set(2, led_data, led_colour(red));
     }
 
     // x axis
@@ -217,19 +223,21 @@ void spirit_level_update(uint32_t* led_data)
             float upper_diff = abs(-0.33 - x_accel);
             float upper_diff_green_brightness_scaler = abs((upper_diff-0.66))/0.66;
             float upper_diff_red_brightness_scaler = upper_diff/0.66;
-            int upper_green_brightness = round(255*upper_diff_green_brightness_scaler);
-            int upper_red_brightness = round(255*upper_diff_red_brightness_scaler);
+            int upper_green_brightness = round(max_brightness*upper_diff_green_brightness_scaler);
+            int upper_red_brightness = round(max_brightness*upper_diff_red_brightness_scaler);
 
             // calculate LED 5 brightness
             float lower_diff = abs(-1 - x_accel);
             float lower_diff_green_brightness_scaler = abs((lower_diff-0.66))/0.66;
             float lower_diff_red_brightness_scaler = lower_diff/0.66;
-            int lower_green_brightness = round(255*lower_diff_green_brightness_scaler);
-            int lower_red_brightness = round(255*lower_diff_red_brightness_scaler);
+            int lower_green_brightness = round(max_brightness*lower_diff_green_brightness_scaler);
+            int lower_red_brightness = round(max_brightness*lower_diff_red_brightness_scaler);
 
             // set leds
             led_set(6, led_data, led_colour(custom, 0, upper_red_brightness, upper_green_brightness, 0));
             led_set(5, led_data, led_colour(custom, 0, lower_red_brightness, lower_green_brightness, 0));
+            led_set(7, led_data, led_colour(red));
+            led_set(8, led_data, led_colour(red));
         }
         else
         {
@@ -239,19 +247,21 @@ void spirit_level_update(uint32_t* led_data)
             float upper_diff = abs(0.33 - x_accel);
             float upper_diff_green_brightness_scaler = abs((upper_diff-0.66))/0.66;
             float upper_diff_red_brightness_scaler = upper_diff/0.66;
-            int upper_green_brightness = round(255*upper_diff_green_brightness_scaler);
-            int upper_red_brightness = round(255*upper_diff_red_brightness_scaler);
+            int upper_green_brightness = round(max_brightness*upper_diff_green_brightness_scaler);
+            int upper_red_brightness = round(max_brightness*upper_diff_red_brightness_scaler);
 
             // calculate LED 6 brightness
             float lower_diff = abs(-0.33 - x_accel);
             float lower_diff_green_brightness_scaler = abs((lower_diff-0.66))/0.66;
             float lower_diff_red_brightness_scaler = lower_diff/0.66;
-            int lower_green_brightness = round(255*lower_diff_green_brightness_scaler);
-            int lower_red_brightness = round(255*lower_diff_red_brightness_scaler);
+            int lower_green_brightness = round(max_brightness*lower_diff_green_brightness_scaler);
+            int lower_red_brightness = round(max_brightness*lower_diff_red_brightness_scaler);
 
             // set leds
             led_set(7, led_data, led_colour(custom, 0, upper_red_brightness, upper_green_brightness, 0));
             led_set(6, led_data, led_colour(custom, 0, lower_red_brightness, lower_green_brightness, 0));
+            led_set(5, led_data, led_colour(red));
+            led_set(8, led_data, led_colour(red));
         }
     }
     else
@@ -262,19 +272,21 @@ void spirit_level_update(uint32_t* led_data)
         float upper_diff = abs(1 - x_accel);
         float upper_diff_green_brightness_scaler = abs((upper_diff-0.66))/0.66;
         float upper_diff_red_brightness_scaler = upper_diff/0.66;
-        int upper_green_brightness = round(255*upper_diff_green_brightness_scaler);
-        int upper_red_brightness = round(255*upper_diff_red_brightness_scaler);
+        int upper_green_brightness = round(max_brightness*upper_diff_green_brightness_scaler);
+        int upper_red_brightness = round(max_brightness*upper_diff_red_brightness_scaler);
 
         // calculate LED 7 brightness
         float lower_diff = abs(0.33 - x_accel);
         float lower_diff_green_brightness_scaler = abs((lower_diff-0.66))/0.66;
         float lower_diff_red_brightness_scaler = lower_diff/0.66;
-        int lower_green_brightness = round(255*lower_diff_green_brightness_scaler);
-        int lower_red_brightness = round(255*lower_diff_red_brightness_scaler);
+        int lower_green_brightness = round(max_brightness*lower_diff_green_brightness_scaler);
+        int lower_red_brightness = round(max_brightness*lower_diff_red_brightness_scaler);
 
         // set leds
         led_set(8, led_data, led_colour(custom, 0, upper_red_brightness, upper_green_brightness, 0));
         led_set(7, led_data, led_colour(custom, 0, lower_red_brightness, lower_green_brightness, 0));
+        led_set(5, led_data, led_colour(red));
+        led_set(6, led_data, led_colour(red));
     }
     
     led_write(led_data);

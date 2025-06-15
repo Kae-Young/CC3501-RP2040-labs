@@ -107,6 +107,26 @@ uint32_t* led_clear_array(uint32_t* led_data, int arr_size)
     return led_data;
 }
 
+void led_device_startup_show()
+{
+    uint32_t* led_data = led_init();
+    
+    for (int i = 1; i < 13; i++)
+    {
+        led_data = led_clear_array(led_data, 12);
+        led_data = led_set(i, led_data, led_colour(white, 5));
+        led_write(led_data);
+        sleep_ms(50);
+    }
+    for (int i = 12; i > 0; i--)
+    {
+        led_data = led_clear_array(led_data, 12);
+        led_data = led_set(i, led_data, led_colour(white, 5));
+        led_write(led_data);
+        sleep_ms(50);
+    }
+}
+
 void led_demo()
 {
     uint32_t* led_data = led_init();
